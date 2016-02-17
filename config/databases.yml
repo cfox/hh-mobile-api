@@ -1,5 +1,12 @@
-development:
+localhost:
   adapter: postgresql
   host: localhost
   username: corbin 
   database: hh_mobile_api_dev
+
+development:
+  adapter: postgresql
+  url: postgres://zjzsgyyfddbboc:k7C-56qPIdD7aS5f6BKY6LzW1I@ec2-54-83-29-133.compute-1.amazonaws.com:5432/d6jpkv7c6f1jci
+  username: zjzsgyyfddbboc
+  password: k7C-56qPIdD7aS5f6BKY6LzW1I
+  database: d6jpkv7c6f1jci
