@@ -1,0 +1,5 @@
+development:
+  adapter: postgresql
+  host: localhost
+  username: corbin 
+  database: hh_mobile_api_dev
