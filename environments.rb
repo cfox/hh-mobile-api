@@ -6,6 +6,11 @@ configure :development do
   set :show_exceptions, true
 end
 
+configure :test do
+  set :database, 'postgres:///hh_mobile_api_test'
+  set :show_exceptions, true
+end
+
 configure :production do 
   db = URI.parse(ENV['DATABASE_URL'])
   ActiveRecord::Base.establish_connection(
