@@ -4,7 +4,7 @@ env:
   RACK_ENV=test
 before_script:
   psql -c 'create database hh_mobile_api_test' -U postgres
-script
+script:
   bundle exec rake db:migrate RACK_ENV=test
 deploy:
   provider: heroku
