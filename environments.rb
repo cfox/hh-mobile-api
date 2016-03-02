@@ -1,3 +1,6 @@
+require 'sinatra'
+require 'sinatra/activerecord'
+
 configure :development do
   set :database, 'postgres:///hh_mobile_api_dev'
   set :show_exceptions, true

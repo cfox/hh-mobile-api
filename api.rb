@@ -1,10 +1,9 @@
 require 'sinatra'
 require 'sinatra/activerecord'
-require './environments'
 require 'json'
 
-class User < ActiveRecord::Base
-end
+require_relative 'environments'
+require_relative 'model'
 
 get '/ping' do
   "pong"
