@@ -1,5 +1,9 @@
 language: ruby
 rvm: 2.2.4
+addons:
+  postgresql: "9.4"
+services:
+  postgresql
 env:
   RACK_ENV=test
 before_script:
