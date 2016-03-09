@@ -1,0 +1,118 @@
+---
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Simple API
+schemes:
+- http
+- https
+basePath: /v1
+consumes: 
+- application/json
+produces: 
+- application/json
+
+paths:
+  /ping:
+    get:
+      description: Ping the API server.
+      responses:
+        200: A "pong".
+
+  /users/facebookLogin:
+    post:
+      description: Signs a Facebook user into the app.  Creates a user entry on
+        the backend if one doesn't already exist.
+      
+      parameters:
+      - name: screenName
+        description: The user's public-facing handle which other users will see.
+          Will be associated with a newly generated account (if applicable).
+        required: true
+        type: string             
+        in: query
+      
+      - name: facebookId
+        description: the user's facebook id.
+        required: true
+        type: string
+        in: query
+      
+      responses:
+        200:
+          description: A successful login will return an access token for the
+            user.
+          schema:
+            type: string
+          examples:
+            application/json:
+              accessKey: "ca1ff6a5-e980-4bc1-b138-938d0b472deb"
+
+  /users/attributes:
+    put:
+      description: Set a user attribute.
+      
+      parameters:
+      - name: accessKey
+        description: The user's access key.
+        required: true
+        type: string
+        in: query
+        
+      - name: attributeName
+        description: The attribute to be set.
+        required: true
+        type: string
+        in: query
+        
+      - name: attributeValue
+        description: The value the attribute is to be set to.
+        required: true
+        type: string
+        in: query
+        
+      responses:
+        200:
+          description: The attribute was set successfully.
+        403:
+          description: The access key was invalid.
+          
+  /places/ratings:
+    get:
+      description: Get overall ratings for some places
+      
+      parameters:
+      - name: placesIds
+        description: The places the ratings of which should be returned.
+        required: true
+        type: array
+        items:
+          type: string
+        in: query
+        
+      responses:
+        200:
+          description: The requested ratings.
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                placeId:
+                  type: string
+                rating:
+                  type: integer
+          examples:
+            application/json:
+              [
+                {
+                  placeId: "41cb61df-647c-4572-8f93-24df4cf63a0b",
+                  rating: 0
+                },
+                {
+                  placeId: "5759a3a9-a3d9-4fd9-ab39-e6d979c78e0e",
+                  rating: 5
+                }
+              ]
+                
+          

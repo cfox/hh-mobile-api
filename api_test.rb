@@ -14,8 +14,9 @@ end
 describe "Mobile API" do
 
   it "should pong a ping" do
-    get '/ping'
-    "pong".must_equal last_response.body
+    get '/v1/ping'
+    expected = {"ping" => "pong"}.to_json
+    expected.must_equal last_response.body
   end
 
 end
