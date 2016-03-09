@@ -2,48 +2,63 @@
 swagger: '2.0'
 info:
   version: 1.0.0
-  title: Simple API
+  title: HH Mobile API
 schemes:
 - http
 - https
 basePath: /v1
-consumes: 
+consumes:
 - application/json
-produces: 
+produces:
 - application/json
+securityDefinitions:
+  api_key:
+    description: Clients must always pass their API key!
+    type: apiKey
+    name: api_key
+    in: header
+security:
+  - api_key: []
 
 paths:
   /ping:
     get:
       description: Ping the API server.
       responses:
-        200: A "pong".
+        200:
+          description: A ping-pong.
+          examples:
+            application/json:
+              ping: pong
 
   /users/facebookLogin:
     post:
       description: Signs a Facebook user into the app.  Creates a user entry on
         the backend if one doesn't already exist.
-      
+
       parameters:
       - name: screenName
         description: The user's public-facing handle which other users will see.
           Will be associated with a newly generated account (if applicable).
         required: true
-        type: string             
+        type: string
         in: query
-      
+
       - name: facebookId
         description: the user's facebook id.
         required: true
         type: string
         in: query
-      
+
       responses:
         200:
           description: A successful login will return an access token for the
             user.
           schema:
-            type: string
+            type: object
+            properties:
+              accessKey:
+                type: string
           examples:
             application/json:
               accessKey: "ca1ff6a5-e980-4bc1-b138-938d0b472deb"
@@ -51,36 +66,36 @@ paths:
   /users/attributes:
     put:
       description: Set a user attribute.
-      
+
       parameters:
       - name: accessKey
         description: The user's access key.
         required: true
         type: string
         in: query
-        
+
       - name: attributeName
         description: The attribute to be set.
         required: true
         type: string
         in: query
-        
+
       - name: attributeValue
         description: The value the attribute is to be set to.
         required: true
         type: string
         in: query
-        
+
       responses:
         200:
           description: The attribute was set successfully.
         403:
           description: The access key was invalid.
-          
+
   /places/ratings:
     get:
       description: Get overall ratings for some places
-      
+
       parameters:
       - name: placesIds
         description: The places the ratings of which should be returned.
@@ -89,7 +104,7 @@ paths:
         items:
           type: string
         in: query
-        
+
       responses:
         200:
           description: The requested ratings.
@@ -114,5 +129,4 @@ paths:
                   rating: 5
                 }
               ]
-                
-          
+              
