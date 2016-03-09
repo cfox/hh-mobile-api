@@ -16,9 +16,9 @@ securityDefinitions:
     description: Clients must always pass their API key!
     type: apiKey
     name: api_key
-    in: header
+    in: query
 security:
-  - api_key: []
+  - api_keyey: []
 
 paths:
   /ping:
@@ -30,6 +30,8 @@ paths:
           examples:
             application/json:
               ping: pong
+        403:
+          description: Forbidden
 
   /users/facebookLogin:
     post:
@@ -37,14 +39,14 @@ paths:
         the backend if one doesn't already exist.
 
       parameters:
-      - name: screenName
+      - name: screen_name
         description: The user's public-facing handle which other users will see.
           Will be associated with a newly generated account (if applicable).
         required: true
         type: string
         in: query
 
-      - name: facebookId
+      - name: facebook_id
         description: the user's facebook id.
         required: true
         type: string
@@ -62,13 +64,15 @@ paths:
           examples:
             application/json:
               accessKey: "ca1ff6a5-e980-4bc1-b138-938d0b472deb"
+        403:
+          description: Forbidden
 
   /users/attributes:
     put:
       description: Set a user attribute.
 
       parameters:
-      - name: accessKey
+      - name: access_key
         description: The user's access key.
         required: true
         type: string
@@ -89,15 +93,17 @@ paths:
       responses:
         200:
           description: The attribute was set successfully.
+        401:
+          description: Unauthorized User
         403:
-          description: The access key was invalid.
+          description: Forbidden
 
   /places/ratings:
     get:
       description: Get overall ratings for some places
 
       parameters:
-      - name: placesIds
+      - name: places_ids
         description: The places the ratings of which should be returned.
         required: true
         type: array
@@ -129,4 +135,5 @@ paths:
                   rating: 5
                 }
               ]
-              
+        403:
+          description: Forbidden

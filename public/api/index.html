@@ -76,8 +76,8 @@
         docExpansion: "none",
         jsonEditor: false,
         apisSorter: "alpha",
-        defaultModelRendering: 'schema',
-        showRequestHeaders: false
+        defaultModelRendering: 'model',
+        showRequestHeaders: true
       });
 
       function addApiKeyAuthorization(){
@@ -92,10 +92,10 @@
       $('#input_apiKey').change(addApiKeyAuthorization);
 
       // if you have an apiKey you would like to pre-populate on the page for demonstration purposes...
-      /*
+
         var apiKey = "myApiKeyXXXX123456789";
         $('#input_apiKey').val(apiKey);
-      */
+
 
       window.swaggerUi.load();
 
