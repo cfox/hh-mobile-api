@@ -18,7 +18,7 @@ securityDefinitions:
     name: api_key
     in: query
 security:
-  - api_keyey: []
+  - api_key: []
 
 paths:
   /ping:
@@ -41,7 +41,6 @@ paths:
       parameters:
       - name: screen_name
         description: The user's public-facing handle which other users will see.
-          Will be associated with a newly generated account (if applicable).
         required: true
         type: string
         in: query
@@ -54,8 +53,8 @@ paths:
 
       responses:
         200:
-          description: A successful login will return an access token for the
-            user.
+          description: A successful login will return an access key for the
+            user.  Pass it in the access_key paremeter in future requests
           schema:
             type: object
             properties:
@@ -68,7 +67,7 @@ paths:
           description: Forbidden
 
   /users/attributes:
-    put:
+    post:
       description: Set a user attribute.
 
       parameters:
@@ -78,13 +77,13 @@ paths:
         type: string
         in: query
 
-      - name: attributeName
+      - name: attribute_name
         description: The attribute to be set.
         required: true
         type: string
         in: query
 
-      - name: attributeValue
+      - name: attribute_value
         description: The value the attribute is to be set to.
         required: true
         type: string
@@ -103,7 +102,7 @@ paths:
       description: Get overall ratings for some places
 
       parameters:
-      - name: places_ids
+      - name: ids
         description: The places the ratings of which should be returned.
         required: true
         type: array
@@ -135,5 +134,304 @@ paths:
                   rating: 5
                 }
               ]
+        403:
+          description: Forbidden
+
+  /places/recommendations:
+    get:
+      description: Get some recommendation info for some places.
+
+      parameters:
+      - name: ids
+        description: The places recommendation info should be returned for.
+        required: true
+        type: array
+        items:
+          type: string
+        in: query
+
+      responses:
+        200:
+          description: The requested recommendation info.
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                placeId:
+                  type: string
+                yeaCount:
+                  type: integer
+                nayCount:
+                  type: integer
+                mehCount:
+                  type: integer
+                feedbackCount:
+                  type: integer
+                topFbFriendIds:
+                  type: array
+                  items:
+                    type: string
+          examples:
+            application/json:
+              [
+                {
+                  placeId: "41cb61df-647c-4572-8f93-24df4cf63a0b",
+                  yeaCount: 5,
+                  nayCount: 2,
+                  mehCount: 1,
+                  feedbackCount: 4,
+                  topFbFriends:
+                    [
+                      "68c8357b-9071-42ed-939c-07c6362f6c2c",
+                      "2ce1fa28-7d7c-4356-9535-f5e5a8b28241",
+                    ]
+                },
+                {
+                  placeId: "5759a3a9-a3d9-4fd9-ab39-e6d979c78e0e",
+                  yeaCount: 3,
+                  nayCount: 0,
+                  mehCount: 1,
+                  feedbackCount: 1,
+                  topFbFriends:
+                    [
+                      "6b5c1bb9-c937-44a9-8d75-baea2778b316"
+                    ]
+                }
+              ]
+        403:
+          description: Forbidden
+
+  /users/friends:
+    post:
+      description: Associate some new friends with a user.
+
+      parameters:
+      - name: access_key
+        description: The user's access key.
+        required: true
+        type: string
+        in: query
+
+      - name: facebook_ids
+        description: The facebook ids of the new friends.
+        required: true
+        type: array
+        items:
+          type: string
+        in: query
+
+      responses:
+        200:
+          description: The friends were associated with the user.
+        401:
+          description: Unauthorized User
+        403:
+          description: Forbidden
+
+  /ratings/feedback:
+    get:
+      description: Get detailed feedback on place for a user.
+
+      parameters:
+      - name: access_key
+        description: The user's access key.
+        required: true
+        type: string
+        in: query
+
+      - name: id
+        description: The id of the place the user wants to get feedback on.
+        required: true
+        type: string
+        in: query
+
+      - name: page_size
+        description: Use if requesting paginated results.
+        required: false
+        type: integer
+        in: query
+
+      - name: page_offset
+        description: Use if requesting paginated results.  0 for first page.
+        required: false
+        type: integer
+        in: query
+
+      - name: sort_option
+        description: How the results should be sorted.  This will sort the whole
+          result set before pagination is applied.  Choose from either "friends"
+          (feedback from friends prioritized) or "recent" (recent feedback prioritized).
+        required: false
+        type: string
+        enum: ["friends", "recent"]
+        in: query
+
+      responses:
+        200:
+          description: The requested feedback.
+          schema:
+            type: object
+            properties:
+              placeId:
+                type: string
+              rating:
+                type: integer
+              categorizedRatings:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    category:
+                      type: string
+                    rating:
+                      type: integer
+              feedback:
+                description: User feedback from both friends and the general user base.
+                type: array
+                items:
+                  type: object
+                  properties:
+                    screenName:
+                      type: string
+                    facebookId:
+                      description: Will be empty if feedback isn't from a friend.
+                      type: string
+                    recommendation:
+                      description: yea, nay or meh
+                      type: string
+                      enum: ["yea", "nay", "meh"]
+                    friendFeedback:
+                      type: string
+                      description: A short (140 char) bit of text feedback from a friend.
+          examples:
+            application/json:
+              {
+                placeId: "41cb61df-647c-4572-8f93-24df4cf63a0b",
+                rating: 3,
+                categorizedRatings:
+                  [
+                    {
+                      category: "service",
+                      rating: 2
+                    },
+                    {
+                      category: "cleanliness",
+                      rating: 4
+                    }
+                  ],
+                feedback:
+                  [
+                    {
+                      screenName: "FoodCritic17",
+                      facebookId: "68c8357b-9071-42ed-939c-07c6362f6c2c",
+                      recommendation: "yea",
+                      friendFeedback: "Was pretty ok I guess.  I liked the eggrolls."
+                    },
+                    {
+                      screenName: "EasyRider99",
+                      facebookId: "2ce1fa28-7d7c-4356-9535-f5e5a8b28241",
+                      recommendation: "meh",
+                      friendFeedback: "Bland as heck dude!  They need to kick it up."
+                    }
+                  ]
+              }
+        401:
+          description: Unauthorized User
+        403:
+          description: Forbidden
+
+  /users/feedback:
+    post:
+      description: User creates feedback for a place.
+
+      parameters:
+      - name: access_key
+        description: The user's access key.
+        required: true
+        type: string
+        in: query
+
+      - name: id
+        description: The id of the place the user wants create feedback on.
+        required: true
+        type: string
+        in: query
+
+      - name: rating_categories
+        description: The list of categories that the user is rating the place in.
+        required: true
+        type: array
+        items:
+          type: string
+        in: query
+
+      - name: ratings
+        description: The user's ratings.  Should be in the same order as rating_categories.
+        required: true
+        type: array
+        items:
+          type: integer
+        in: query
+
+      - name: recommendation
+        description: yea, nay or meh
+        required: true
+        allowEmptyValue: true
+        type: string
+        enum: ["yea", "nay", "meh"]
+        in: query
+
+      - name: friend_feedback
+        description: Short (140 chars) text feedback meant to be seen by user's friends.
+        required: true
+        allowEmptyValue: true
+        type: string
+        in: query
+
+      - name: business_feedback
+        description: Short (140 chars) text feedback meant to be seen by the business.
+        required: true
+        allowEmptyValue: true
+        type: string
+        in: query
+
+      responses:
+        200:
+          description: feedback submitted
+        401:
+          description: Unauthorized User
+        403:
+          description: Forbidden
+
+  /users/follows:
+    post:
+      description: Have a user follow or unfollow a place.
+
+      parameters:
+      - name: access_key
+        description: The user's access key.
+        required: true
+        type: string
+        in: query
+
+      - name: id
+        description: The id of the place to be (possibly un)followed.
+        required: true
+        type: string
+        in: query
+
+      - name: action
+        description: Whether to follow or unfollow.
+        required: true
+        type: string
+        enum: ["follow", "unfollow"]
+        in: query
+
+      responses:
+        200:
+          description: The action was a success.
+        401:
+          description: Unauthorized User
         403:
           description: Forbidden
