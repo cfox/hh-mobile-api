@@ -229,7 +229,69 @@ paths:
         403:
           description: Forbidden
 
-  /ratings/feedback:
+  /users/feedback:
+    post:
+      description: User creates feedback for a place.
+
+      parameters:
+      - name: access_key
+        description: The user's access key.
+        required: true
+        type: string
+        in: query
+
+      - name: id
+        description: The id of the place the user wants create feedback for.
+        required: true
+        type: string
+        in: query
+
+      - name: rating_categories
+        description: The list of categories that the user is rating the place in.
+        required: true
+        type: array
+        items:
+          type: string
+        in: query
+
+      - name: ratings
+        description: The user's ratings.  Should be in the same order as rating_categories.
+        required: true
+        type: array
+        items:
+          type: integer
+        in: query
+
+      - name: recommendation
+        description: yea, nay or meh
+        required: true
+        allowEmptyValue: true
+        type: string
+        enum: ["yea", "nay", "meh"]
+        in: query
+
+      - name: friend_feedback
+        description: Short (140 chars) text feedback meant to be seen by user's friends.
+        required: true
+        allowEmptyValue: true
+        type: string
+        in: query
+
+      - name: business_feedback
+        description: Short (140 chars) text feedback meant to be seen by the business.
+        required: true
+        allowEmptyValue: true
+        type: string
+        in: query
+
+      responses:
+        200:
+          description: feedback submitted
+        401:
+          description: Unauthorized User
+        403:
+          description: Forbidden
+
     get:
       description: Get detailed feedback on place for a user.
 
@@ -341,68 +403,6 @@ paths:
         403:
           description: Forbidden
 
-  /users/feedback:
-    post:
-      description: User creates feedback for a place.
-
-      parameters:
-      - name: access_key
-        description: The user's access key.
-        required: true
-        type: string
-        in: query
-
-      - name: id
-        description: The id of the place the user wants create feedback on.
-        required: true
-        type: string
-        in: query
-
-      - name: rating_categories
-        description: The list of categories that the user is rating the place in.
-        required: true
-        type: array
-        items:
-          type: string
-        in: query
-
-      - name: ratings
-        description: The user's ratings.  Should be in the same order as rating_categories.
-        required: true
-        type: array
-        items:
-          type: integer
-        in: query
-
-      - name: recommendation
-        description: yea, nay or meh
-        required: true
-        allowEmptyValue: true
-        type: string
-        enum: ["yea", "nay", "meh"]
-        in: query
-
-      - name: friend_feedback
-        description: Short (140 chars) text feedback meant to be seen by user's friends.
-        required: true
-        allowEmptyValue: true
-        type: string
-        in: query
-
-      - name: business_feedback
-        description: Short (140 chars) text feedback meant to be seen by the business.
-        required: true
-        allowEmptyValue: true
-        type: string
-        in: query
-
-      responses:
-        200:
-          description: feedback submitted
-        401:
-          description: Unauthorized User
-        403:
-          description: Forbidden
 
   /users/follows:
     post:
