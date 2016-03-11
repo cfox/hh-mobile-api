@@ -20,8 +20,6 @@ class UserTest < ActiveSupport::TestCase
 
     refute_nil user.id
     refute_empty user.id
-
-    puts user.id
   end
 
 end

@@ -19,6 +19,8 @@ GEM
     builder (3.2.2)
     i18n (0.7.0)
     json (1.8.3)
+    macaddr (1.7.1)
+      systemu (~> 2.6.2)
     minitest (5.4.3)
     pg (0.18.4)
     rack (1.6.4)
@@ -42,6 +44,7 @@ GEM
     sinatra-activerecord (2.0.9)
       activerecord (>= 3.2)
       sinatra (~> 1.0)
+    systemu (2.6.5)
     thread_safe (0.3.5)
     tilt (2.0.2)
     tux (0.3.0)
@@ -51,6 +54,8 @@ GEM
       sinatra (>= 1.2.1)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
+    uuid (2.3.8)
+      macaddr (~> 1.0)
 
 PLATFORMS
   ruby
@@ -65,6 +70,7 @@ DEPENDENCIES
   sinatra
   sinatra-activerecord
   tux
+  uuid
 
 BUNDLED WITH
    1.11.2

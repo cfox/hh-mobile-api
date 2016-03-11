@@ -65,6 +65,8 @@ paths:
               accessKey: "ca1ff6a5-e980-4bc1-b138-938d0b472deb"
         403:
           description: Forbidden
+        422:
+          description: Bad Parameters
 
   /users/attributes:
     post:
@@ -96,6 +98,8 @@ paths:
           description: Unauthorized User
         403:
           description: Forbidden
+        422:
+          description: Bad Parameters
 
   /places/ratings:
     get:
@@ -136,6 +140,8 @@ paths:
               ]
         403:
           description: Forbidden
+        422:
+          description: Bad Parameters
 
   /places/recommendations:
     get:
@@ -201,6 +207,8 @@ paths:
               ]
         403:
           description: Forbidden
+        422:
+          description: Bad Parameters
 
   /users/friends:
     post:
@@ -228,6 +236,8 @@ paths:
           description: Unauthorized User
         403:
           description: Forbidden
+        422:
+          description: Bad Parameters
 
   /users/feedback:
     post:
@@ -291,6 +301,8 @@ paths:
           description: Unauthorized User
         403:
           description: Forbidden
+        422:
+          description: Bad Parameters
 
     get:
       description: Get detailed feedback on place for a user.
@@ -402,6 +414,8 @@ paths:
           description: Unauthorized User
         403:
           description: Forbidden
+        422:
+          description: Bad Parameters
 
 
   /users/follows:
@@ -435,3 +449,5 @@ paths:
           description: Unauthorized User
         403:
           description: Forbidden
+        422:
+          description: Bad Parameters

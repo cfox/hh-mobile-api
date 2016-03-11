@@ -7,6 +7,7 @@ gem "json"
 gem "pg"
 gem "activerecord"
 gem "sinatra-activerecord"
+gem "uuid"
 
 group :develpment do
   gem "tux"
