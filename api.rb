@@ -15,13 +15,20 @@ before '/v1/*' do
   halt 403 if params['api_key'].nil? || params['api_key'].empty?
 end
 
+helpers do
+  def require_params!(*names)
+    names.each do |name| 
+      halt 422 if params[name].nil? || params[name].empty?
+    end
+  end
+end
+
 get '/v1/ping' do
   {"ping" => "pong"}.to_json
 end
 
 post '/v1/users/facebookLogin' do
-  halt 422 if params['screen_name'].nil? || params['screen_name'].empty?
-  halt 422 if params['facebook_id'].nil? || params['facebook_id'].empty?
+  require_params!('screen_name', 'facebook_id')
 
   existing_user = User.find_by(facebook_access_token: params['facebook_id'])
 
