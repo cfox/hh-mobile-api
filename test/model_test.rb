@@ -2,8 +2,8 @@ ENV['RACK_ENV'] = 'test'
 
 require 'minitest/autorun'
 
-require_relative 'environments'
-require_relative 'model'
+require_relative '../environments'
+require_relative '../model'
 
 class UserTest < ActiveSupport::TestCase
 
