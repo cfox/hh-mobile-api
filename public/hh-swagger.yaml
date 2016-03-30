@@ -288,7 +288,7 @@ paths:
         in: query
 
       - name: business_feedback
-        description: Short (140 chars) text feedback meant to be seen by the business.
+        description: Text feedback meant to be seen by the business.
         required: true
         allowEmptyValue: true
         type: string
