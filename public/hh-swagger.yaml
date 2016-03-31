@@ -98,6 +98,8 @@ paths:
           description: Unauthorized User
         403:
           description: Forbidden
+        404:
+          description: User not found
         422:
           description: Bad Parameters
 

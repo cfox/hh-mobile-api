@@ -50,9 +50,21 @@ post '/v1/users/facebookLogin' do
 end
 
 # POST /users/attributes
-# TODO: Implement me!
 post '/v1/users/attributes' do
-  200
+  require_params!('access_key', 'attribute_name', 'attribute_value')
+
+  user = User.find_by(access_token: params['access_key'])
+
+  if user
+
+    user.properties = {} if user.properties.nil?
+    user.properties[params['attribute_name']] = params['attribute_value']
+    user.save
+    return 200
+
+  else
+    return 404
+  end
 end
 
 # GET /places/ratings
